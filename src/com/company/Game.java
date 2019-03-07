@@ -43,7 +43,6 @@ public class Game extends Model {
         // display the view in a frame
         final JFrame frame = new JFrame();
 
-
         // quit the application when the game window is closed
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLocationByPlatform(true);
@@ -128,6 +127,14 @@ public class Game extends Model {
 
     public UserView getView() {
         return view;
+    }
+
+    public int getLevel(){return level;}
+
+    public void setLevel(int level){
+        this.level = level;
+        level--;
+        goNextLevel();
     }
 
 }

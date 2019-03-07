@@ -8,6 +8,7 @@ import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
+import static com.company.PauseButton.mythread;
 import static java.awt.event.KeyEvent.VK_SPACE;
 
 public class Controller extends KeyAdapter {
@@ -16,6 +17,7 @@ public class Controller extends KeyAdapter {
     private float WALKING_SPEED = 4;
     private int jumpsRemaining = 2;
     private Player body;
+    private boolean paused = false, resume = false;
 
     public Controller(Player body) {
         this.body = body;
@@ -68,6 +70,17 @@ public class Controller extends KeyAdapter {
             body.removeAllImages();
             body.addImage(new BodyImage("data/JungleAssets/Character/sprites/run_left.gif",2.7f));
             }
+        } else if (code == e.VK_SPACE && !paused){
+            paused = true;
+            while (!resume) {
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException x) {
+                    x.printStackTrace();
+                }
+            }
+        }else if(code == e.VK_SPACE && paused){
+            resume = true;
         }
     }
 
