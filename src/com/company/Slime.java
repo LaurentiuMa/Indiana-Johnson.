@@ -14,6 +14,7 @@ public class Slime extends Walker {
         super(w, slimeShape);
         addImage(faceRight);
         hp = 150;
+        setGravityScale(100);
     }
 
     public int getHp() {

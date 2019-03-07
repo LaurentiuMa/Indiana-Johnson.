@@ -13,11 +13,8 @@ import java.util.concurrent.ThreadLocalRandom;
  */
 public class Level2 extends GameLevel {
 
-    private static final int NUM_TREASURES = 1;
+    private static final int NUM_TREASURES = 3;
     private Player player;
-
-    private static final BodyImage backgroundLayer3 = new BodyImage("data/JungleAssets/parallax background/plx-3.png",51);
-    private static final BodyImage backgroundLayer4 = new BodyImage("data/JungleAssets/parallax background/plx-4.png",51);
 
     public Level2(){
 
@@ -49,7 +46,18 @@ public class Level2 extends GameLevel {
         makePlatform(0.7f,0.5f,5f,14f,0);
         makePlatform(0.7f,0.5f,15f,14f,0);
         makePlatform(1.4f,0.5f,22.8f,10f,0);
-//fix this
+        makePlatform(2.8f,0.5f,-22.5f,15f,0);
+
+        //creates the treasure on the map
+        Treasure treasure = new Treasure(this);
+        treasure.setPosition(new Vec2(0f, 14f));
+        treasure.setGravityScale(100);
+        treasure.addCollisionListener(new Pickup(getPlayer()));
+
+        Treasure treasure2 = new Treasure(this);
+        treasure2.setPosition(new Vec2(23f, 11f));
+        treasure2.setGravityScale(100);
+        treasure2.addCollisionListener(new Pickup(getPlayer()));
 
 
         BoxShape sensor2Shape = new BoxShape(0.1f,0.1f);
@@ -59,55 +67,24 @@ public class Level2 extends GameLevel {
         Slime slime1 = new Slime(this);
         slime1.setPosition(new Vec2(0f,-5f));
         slime1.setGravityScale(0);
-        slime1.setLinearVelocity(new Vec2(2,0));
+        slime1.setLinearVelocity(new Vec2(0,0));
+        slime1.addCollisionListener(new PushAway(getPlayer()));
 
         Sensor sensor1 = new Sensor(new StaticBody(this),new BoxShape(0.1f,0.1f));
         sensor1.addSensorListener(new TurnEnemy(slime1));
 
         Body slime2 = new Slime(this);
         slime2.setPosition(new Vec2(-19f,11f));
-
-        BoxShape backgroundShape4 = new BoxShape(0.1f,0.1f);
-        Body background4 = new StaticBody(this,backgroundShape4);
-        background4.setPosition(new Vec2(0,-6));
-        background4.addImage(backgroundLayer4);
-
-
-        BoxShape backgroundShape = new BoxShape(0.1f,0.1f);
-        Body background = new StaticBody(this,backgroundShape);
-        background.setPosition(new Vec2(0,-6));
-        background.addImage(backgroundLayer3);
-
+        slime2.addCollisionListener(new PushAway(getPlayer()));
 
         game.getView().setBackground(Color.getHSBColor(80,68,40));
 
+        Shape endGameCollisionShape = new BoxShape(800,5);
+        Body endGameCollision = new StaticBody(this,endGameCollisionShape);
+        endGameCollision.setPosition(new Vec2(0f,-35f));
 
-        //creates the treasure on the map
-        Body treasure = new Treasure(this);
-        treasure.setPosition(new Vec2(22f, -17f));
-        ((Treasure) treasure).setGravityScale(100);
-        treasure.addCollisionListener(new Pickup(getPlayer()));
+        background(2);
 
-
-    }
-
-    @SuppressWarnings("Duplicates")
-    //method makes it easier to create platforms whenever I need them
-    public void makePlatform(float width,float height,float x,float y, float angle){
-        Shape platformShape = new BoxShape(width,height);
-        Body platform = new StaticBody(this,platformShape);
-        platform.setPosition(new Vec2(x,y));
-        platform.setAngleDegrees(angle);
-        if (width > 1.5f){
-            platform.removeAllImages();
-            platform.addImage(new BodyImage("data/JungleAssets/platform.png",0.9f));
-        }else if (width <1.5f && width > 1f){
-            platform.removeAllImages();
-            platform.addImage(new BodyImage("data/JungleAssets/halfPlatform.png",0.9f));
-        }else{
-            platform.removeAllImages();
-            platform.addImage(new BodyImage("data/JungleAssets/smallPlatform.png",0.8f));
-        }
     }
 
 
@@ -118,11 +95,13 @@ public class Level2 extends GameLevel {
 
     @Override
     public Vec2 doorPosition() {
-        return new Vec2(27, 50f);
+        return new Vec2(-24, 16.75f);
     }
 
     @Override
     public boolean isCompleted() {
-        return getPlayer().getCount() == NUM_TREASURES;
+        return getPlayer().getTreasuresFound() == NUM_TREASURES;
     }
+    @Override
+    public Color getBackgroundColor(){return Color.getHSBColor(84,38,120);}
 }

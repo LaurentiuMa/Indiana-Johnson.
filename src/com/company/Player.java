@@ -19,7 +19,7 @@ public class Player extends Walker {
         hp = 100;
     }
 
-    public int getCount(){
+    public int getTreasuresFound(){
         return treasuresFound;
     }
 
@@ -31,7 +31,11 @@ public class Player extends Walker {
     public void reduceHp(int amount){
         hp -= amount;
     }
-
+    public int getHp(){return hp;}
+    public void setTreasuresFound(int treasures) {
+        this.treasuresFound = treasures;
+    }
+    public void kill(){hp = 0; }
 
 
 

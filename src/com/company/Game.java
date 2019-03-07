@@ -3,6 +3,7 @@ package com.company;
 import javax.swing.*;
 
 import city.cs.engine.*;
+import city.cs.engine.Shape;
 import org.jbox2d.common.Vec2;
 
 import java.awt.*;
@@ -18,10 +19,6 @@ public class Game {
     /** A graphical display of the world  */
     private UserView view;
 
-    private static final BodyImage backgroundLayer3 = new BodyImage("data/JungleAssets/parallax background/plx-3.png",40);
-    private static final BodyImage backgroundLayer4 = new BodyImage("data/JungleAssets/parallax background/plx-4.png",40);
-    private static final BodyImage backgroundLayer2 = new BodyImage("data/JungleAssets/parallax background/plx-2.png",40);
-
     private int level;
 
     private Controller controller;
@@ -34,8 +31,8 @@ public class Game {
         world.populate(this);
 
         // make a view
-        view = new UserView(world, 1024, 768);
-
+        view = new MyView(world,world.getPlayer(), 1024, 768);
+        view.setBackground(world.getBackgroundColor());
         // uncomment this to draw a 1-metre grid over the view
         view.setGridResolution(1);
 
@@ -65,7 +62,6 @@ public class Game {
         // uncomment this to make a debugging view
         JFrame debugView = new DebugViewer(world, 500, 500);
 
-        view.setBackground(Color.getHSBColor(80,68,40));
 
         // start!
         world.start();
@@ -84,7 +80,8 @@ public class Game {
     /** Advance to the next level of the game. */
     public void goNextLevel() {
         world.stop();
-        if (level == 2) {
+        Player oldPlayer = world.getPlayer();
+        if (level == 3) {
             System.exit(0);
         } else {
             level++;
@@ -94,9 +91,10 @@ public class Game {
             world.populate(this);
             // switch the keyboard control to the new player
             controller.setBody(world.getPlayer());
+            world.getPlayer().setTreasuresFound(oldPlayer.getTreasuresFound());
             // show the new world in the view
             view.setWorld(world);
-
+            view.setBackground(world.getBackgroundColor());
             world.start();
         }
     }

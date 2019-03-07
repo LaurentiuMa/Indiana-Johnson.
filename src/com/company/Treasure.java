@@ -19,6 +19,7 @@ public class Treasure extends DynamicBody{
     public Treasure(World w){
         super(w, collidingShape);
         addImage(imageClosed);
+
     }
 
 
