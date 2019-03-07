@@ -11,12 +11,16 @@ import java.awt.image.ImageObserver;
 import java.awt.image.ImageProducer;
 
 
-public class Game {
+public class Game extends Model {
 
-    /** The World in which the bodies move and interact. */
+    /**
+     * The World in which the bodies move and interact.
+     */
     private GameLevel world;
 
-    /** A graphical display of the world  */
+    /**
+     * A graphical display of the world
+     */
     private UserView view;
 
     private int level;
@@ -31,7 +35,7 @@ public class Game {
         world.populate(this);
 
         // make a view
-        view = new MyView(world,world.getPlayer(), 1024, 768);
+        view = new ScoreView(world, this, 1024, 768);
         view.setBackground(world.getBackgroundColor());
         // uncomment this to draw a 1-metre grid over the view
         view.setGridResolution(1);
@@ -67,23 +71,29 @@ public class Game {
         world.start();
     }
 
-    /** The player in the current level. */
+    /**
+     * The player in the current level.
+     */
     public Player getPlayer() {
         return world.getPlayer();
     }
 
-    /** Is the current level of the game finished? */
+    /**
+     * Is the current level of the game finished?
+     */
     public boolean isCurrentLevelCompleted() {
         return world.isCompleted();
     }
 
-    /** Advance to the next level of the game. */
+    /**
+     * Advance to the next level of the game.
+     */
     public void goNextLevel() {
         world.stop();
         Player oldPlayer = world.getPlayer();
         if (level == 3) {
             System.exit(0);
-        } else {
+        } else if (level == 1) {
             level++;
             // get a new world
             world = new Level2();
@@ -92,9 +102,22 @@ public class Game {
             // switch the keyboard control to the new player
             controller.setBody(world.getPlayer());
             world.getPlayer().setTreasuresFound(oldPlayer.getTreasuresFound());
+            world.getPlayer().setHp(oldPlayer.getHp());
             // show the new world in the view
             view.setWorld(world);
             view.setBackground(world.getBackgroundColor());
+            world.start();
+        } else if (level == 2) {
+            level++;
+            // get a new world
+            world = new Level3();
+            // fill it with bodies
+            world.populate(this);
+            // switch the keyboard control to the new player
+            controller.setBody(world.getPlayer());
+            world.getPlayer().setTreasuresFound(oldPlayer.getTreasuresFound());
+            // show the new world in the view
+            view.setWorld(world);
             world.start();
         }
     }
@@ -102,5 +125,9 @@ public class Game {
     public static void main(String[] args) {
         new Game();
     }
-    public UserView getView(){return view;}
+
+    public UserView getView() {
+        return view;
+    }
+
 }

@@ -14,6 +14,7 @@ public abstract class GameLevel extends World {
     private static final BodyImage backgroundLayer2 = new BodyImage("data/JungleAssets/parallax background/plx-2.png",51);
     private static final BodyImage backgroundLayer3 = new BodyImage("data/JungleAssets/parallax background/plx-3.png",51);
     private static final BodyImage backgroundLayer4 = new BodyImage("data/JungleAssets/parallax background/plx-4.png",51);
+    private static final BodyImage Lv3BG = new BodyImage("data/Level3BG.jpg",40);
     public Player getPlayer() {
         return player;
     }
@@ -24,7 +25,7 @@ public abstract class GameLevel extends World {
      */
     public void populate(Game game) {
 
-        player = new Player(this);
+        player = new Player(this,game);
         player.setPosition(startPosition());
         player.setGravityScale(2);
 
@@ -35,6 +36,13 @@ public abstract class GameLevel extends World {
         EndGameCollision endGame = new EndGameCollision(this);
         endGame.addCollisionListener(new KillIfTouched(getPlayer()));
 
+        BoxShape sidePanelRightShape = new BoxShape(0.5f,25f);
+        StaticBody sidePanelRight = new StaticBody(this,sidePanelRightShape);
+        sidePanelRight.setPosition(new Vec2(27,0));
+
+        BoxShape sidePanelLeftShape = new BoxShape(0.5f,25f);
+        StaticBody sidePanelLeft = new StaticBody(this,sidePanelLeftShape);
+        sidePanelLeft.setPosition(new Vec2(-27,0));
     }
 
     @SuppressWarnings("Duplicates")
@@ -69,8 +77,8 @@ public abstract class GameLevel extends World {
         }else if(i == 3){
             BoxShape backgroundShape2 = new BoxShape(0.1f,0.1f);
             Body background2 = new StaticBody(this,backgroundShape2);
-            background2.setPosition(new Vec2(0,-6f));
-            background2.addImage(backgroundLayer2);
+            background2.setPosition(new Vec2(0,0f));
+            background2.addImage(Lv3BG);
         }
     }
 

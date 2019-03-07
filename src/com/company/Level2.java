@@ -64,24 +64,29 @@ public class Level2 extends GameLevel {
         Body sensor2 = new StaticBody(this,sensor2Shape);
         sensor2.setPosition(new Vec2(-2f,-5f));
 
-        Slime slime1 = new Slime(this);
-        slime1.setPosition(new Vec2(0f,-5f));
-        slime1.setGravityScale(0);
-        slime1.setLinearVelocity(new Vec2(0,0));
-        slime1.addCollisionListener(new PushAway(getPlayer()));
-
-        Sensor sensor1 = new Sensor(new StaticBody(this),new BoxShape(0.1f,0.1f));
-        sensor1.addSensorListener(new TurnEnemy(slime1));
-
-        Body slime2 = new Slime(this);
-        slime2.setPosition(new Vec2(-19f,11f));
-        slime2.addCollisionListener(new PushAway(getPlayer()));
+//        Slime slime1 = new Slime(this);
+//        slime1.setPosition(new Vec2(0f,-5f));
+//        slime1.setGravityScale(0);
+//        slime1.setLinearVelocity(new Vec2(0,0));
+//        slime1.addCollisionListener(new PushAway(getPlayer()));
+//
+//        Sensor sensor1 = new Sensor(new StaticBody(this),new BoxShape(0.1f,0.1f));
+//        sensor1.addSensorListener(new TurnEnemy(slime1));
+//
+//        Body slime2 = new Slime(this);
+//        slime2.setPosition(new Vec2(-19f,11f));
+//        slime2.addCollisionListener(new PushAway(getPlayer()));
 
         game.getView().setBackground(Color.getHSBColor(80,68,40));
 
         Shape endGameCollisionShape = new BoxShape(800,5);
         Body endGameCollision = new StaticBody(this,endGameCollisionShape);
         endGameCollision.setPosition(new Vec2(0f,-35f));
+
+        Treasure treasure3 = new Treasure(this);
+        treasure3.setPosition(new Vec2(21f, 10.5f));
+        treasure3.setGravityScale(1);
+        treasure3.addCollisionListener(new Pickup(getPlayer()));
 
         background(2);
 
@@ -95,8 +100,14 @@ public class Level2 extends GameLevel {
 
     @Override
     public Vec2 doorPosition() {
-        return new Vec2(-24, 16.75f);
+        return new Vec2(25, -18f);
     }
+
+//
+//    @Override
+//    public Vec2 doorPosition() {
+//        return new Vec2(-24, 16.75f);
+//    }
 
     @Override
     public boolean isCompleted() {

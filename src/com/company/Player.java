@@ -1,6 +1,9 @@
 package com.company;
 
 import city.cs.engine.*;
+import city.cs.engine.Shape;
+
+import java.awt.*;
 
 public class Player extends Walker {
 
@@ -11,11 +14,15 @@ public class Player extends Walker {
     );
     private int treasuresFound;
     private int hp;
+    private Game game;
 
-    public Player(World w){
+
+
+    public Player(World w, Game game){
         super(w, playerShape);
         addImage(image);
         treasuresFound = 0;
+        this.game = game;
         hp = 100;
     }
 
@@ -26,6 +33,7 @@ public class Player extends Walker {
     public void incrementTreasuresFound(){
         treasuresFound++;
         System.out.println("Found " + treasuresFound);
+        game.changed();
     }
 
     public void reduceHp(int amount){
@@ -35,10 +43,8 @@ public class Player extends Walker {
     public void setTreasuresFound(int treasures) {
         this.treasuresFound = treasures;
     }
+    public void setHp(int hp){this.hp = hp;}
     public void kill(){hp = 0; }
 
 
-
-
-
-}
+    }

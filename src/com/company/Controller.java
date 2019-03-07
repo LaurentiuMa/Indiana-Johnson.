@@ -8,15 +8,16 @@ import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
+import static java.awt.event.KeyEvent.VK_SPACE;
+
 public class Controller extends KeyAdapter {
 
     private float JUMPING_SPEED = 11;
     private float WALKING_SPEED = 4;
     private int jumpsRemaining = 2;
+    private Player body;
 
-    private Walker body;
-
-    public Controller(Walker body) {
+    public Controller(Player body) {
         this.body = body;
         body.setGravityScale(2);
     }
@@ -52,7 +53,7 @@ public class Controller extends KeyAdapter {
                 jumpsRemaining = 0;
             }
             /*Standard, if d pressed, move right, load the respective animation*/
-        } else if (code == KeyEvent.VK_D) {
+        }else if (code == KeyEvent.VK_D) {
             Vec2 v2 = body.getLinearVelocity();
             if (Math.abs(v2.y) < 0.01f ) {
                 body.startWalking(WALKING_SPEED);
@@ -66,8 +67,10 @@ public class Controller extends KeyAdapter {
             body.startWalking(-WALKING_SPEED);
             body.removeAllImages();
             body.addImage(new BodyImage("data/JungleAssets/Character/sprites/run_left.gif",2.7f));
-        }}
+            }
+        }
     }
+
 
     @Override
     public void keyReleased(KeyEvent e) {
@@ -86,7 +89,7 @@ public class Controller extends KeyAdapter {
 
         }
 
-    public void setBody(Walker body) {
+    public void setBody(Player body) {
         this.body = body;
     }
 

@@ -13,7 +13,7 @@ import java.util.concurrent.ThreadLocalRandom;
  */
 public class Level1 extends GameLevel {
 
-    private static final int NUM_TREASURES = 0;
+    private static final int NUM_TREASURES = 1;
     private Player player;
 
     /**
@@ -22,8 +22,6 @@ public class Level1 extends GameLevel {
     @Override
     public void populate(Game game) {
         super.populate(game);
-
-        //Background background = new Background(this);
 
         //platforms
         makePlatform(2.8f,0.5f,-22.8f,-18f,0);
@@ -70,7 +68,13 @@ public class Level1 extends GameLevel {
         treasure.setGravityScale(100);
         treasure.addCollisionListener(new Pickup(getPlayer()));
 
+        Treasure treasure2 = new Treasure(this);
+        treasure2.setPosition(new Vec2(-23f, 0f));
+        treasure2.setGravityScale(100);
+        treasure2.addCollisionListener(new Pickup(getPlayer()));
+
         background(1);
+
 
     }
 
@@ -85,7 +89,7 @@ public class Level1 extends GameLevel {
 
     @Override
     public Vec2 doorPosition() {
-        return new Vec2(-24, -16.3f);
+        return new Vec2(-24.2f, -16.3f);
     }
 
     @Override
